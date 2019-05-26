@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<head>
+	<title>Image gallery with image loading</title>
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+		.gallery {
+			display:grid;
+			grid-template-columns: repeat(auto-fill, minmax(252px, 1fr));
+			padding:5px;
+			border:1px solid #ccc;
+		}
+		.thumb {
+			border:1px solid #ccc;
+			cursor:pointer;
+			padding:5px;
+			margin:5px;
+			transition:all 0.3s;
+			justify-self:center;
+		}
+		.thumb:hover {
+			opacity:0.5;
+		}
+		.modal {
+			display:none;
+			background:rgba(5,5,5,0.75);
+			position:fixed;
+			top:0;
+			left:0;
+			right:0;
+			bottom:0;
+			justify-content:center;
+			align-items:center;
+			z-index:999;
+		}
+		.close-modal, .next-image, .previous-image {
+			position:absolute;
+			top:0;
+			right:0;
+			width:50px;
+			height:50px;
+			list-style: height 50px;
+			text-align:center;
+			color:#ccc;
+			user-select:none;
+			font-size:40px;
+			cursor:pointer;
+		}
+		.next-image, .previous-image {
+			top:50%;
+			transform:translateY(-50%);
+			padding:5px 0 10px 0;
+			height:70px;
+		}
+		.previous-image {
+			left:0;
+		}
+		.modal-title {
+			position:absolute;
+			top:15px;
+			color:#ccc;
+			font-size:24px;
+			font-family:"Tahoma";
+		}
+		.modal-image {
+			max-height:calc(100% - 65px);
+			max-width:calc(100% - 150px);
+			padding-top:30px;
+			user-select:none;
+			animation:fadein 1s forwards;
+		}
+		.loading {
+			display:table;
+		}
+		.dot1 {
+			animation: loading 0.75s 0.25s infinite;
+		}
+		.dot2 {
+			animation: loading 0.75s 0.5s infinite;
+		}
+		.dot3 {
+			animation: loading 0.75s 0.75s infinite;
+		}
+		.dot1, .dot2, .dot3 {
+			display:inline-block;
+			color:#ccc;
+			font-size:32pt;
+		}
+		@keyframes loading {
+			0% {opacity:1;}
+			50% {opacity:0;}
+			100% {opacity:1;}
+		}
+		@keyframes fadein {
+			0% {opacity:0; transform:scale(0.1);}
+			100% {opacity:1; transform:scale(1);}
+		}
+	</style>
+</head>
+<body>
+	<div class="modal">
+		<img class="modal-image" src="">
+		<div class="modal-title">Test</div>
+		<div class="close-modal">&times;</div>
+		<div class="next-image">&rarr;</div>
+		<div class="previous-image">&larr;</div>
+		<div class="loading">
+			<div class="dot1">&#x25cf;</div>
+			<div class="dot2">&#x25cf;</div>
+			<div class="dot3">&#x25cf;</div>
+		</div>
+	</div>
+	<div class="gallery">
+		<img src="images/thumbs/1.jpg" data-image="1.jpg" data-title="Forest" class="thumb">
+		<img src="images/thumbs/2.jpg" data-image="2.jpg" data-title="Pumpkins" class="thumb">
+		<img src="images/thumbs/3.jpg" data-image="3.jpg" data-title="City" class="thumb">
+		<img src="images/thumbs/1.jpg" data-image="1.jpg" data-title="Forest" class="thumb">
+		<img src="images/thumbs/2.jpg" data-image="2.jpg" data-title="Pumpkins" class="thumb">
+		<img src="images/thumbs/3.jpg" data-image="3.jpg" data-title="City" class="thumb">
+		<img src="images/thumbs/1.jpg" data-image="1.jpg" data-title="Forest" class="thumb">
+		<img src="images/thumbs/2.jpg" data-image="2.jpg" data-title="Pumpkins" class="thumb">
+		<img src="images/thumbs/3.jpg" data-image="3.jpg" data-title="City" class="thumb">
+		<img src="images/thumbs/1.jpg" data-image="1.jpg" data-title="Forest" class="thumb">
+		<img src="images/thumbs/2.jpg" data-image="2.jpg" data-title="Pumpkins" class="thumb">
+		<img src="images/thumbs/3.jpg" data-image="3.jpg" data-title="City" class="thumb">
+	</div>
+	<script type="text/javascript">
+		var modal = document.querySelector(".modal");
+		var modalImage = document.querySelector(".modal-image");
+		var modalTitle = document.querySelector(".modal-title");
+		var closeModal = document.querySelector(".close-modal");
+		var nextImage = document.querySelector(".next-image");
+		var previousImage = document.querySelector(".previous-image");
+		var loader = document.querySelector(".loading");
+		var thumbs = document.querySelectorAll(".thumb");
+		var images = [];
+		var imageNow;
+
+		for (var i = 0; i < thumbs.length; i++) {
+			images.push(thumbs[i].dataset.image);
+
+			thumbs[i].addEventListener("click", function() {
+				modalImage.style.display = "none";
+				loader.style.display = "table";
+				imageNow = this.dataset.image;
+				modal.style.display = "flex";
+				modalImage.src = "images/fullsize/" + this.dataset.image;
+				modalTitle.innerHTML = this.dataset.title;
+			});
+		}
+
+		modalImage.addEventListener("load", function() {
+			loader.style.display = "none";
+			this.style.display = "inline";
+			this.style.animation = "none";
+			this.offsetHeight;
+			this.style.animation = null;
+		});
+
+		closeModal.addEventListener("click", function() {
+			modal.style.display = "none";
+		});
+
+		document.addEventListener("keyup", function(e) {
+			if (e.key == "Escape") {
+				modal.style.display = "none";
+			}
+		});
+
+		nextImage.addEventListener("click", function() {
+			modalImage.style.display = "none";
+			loader.style.display = "table";
+			var index = images.indexOf(imageNow);
+			if (index == images.length - 1) {
+				index = -1;
+			}
+			imageNow = thumbs[index + 1].dataset.image;
+			modalImage.src = "images/fullsize/" + thumbs[index + 1].dataset.image;
+			modalTitle.innerHTML = thumbs[index + 1].dataset.title;
+		});
+
+		previousImage.addEventListener("click", function() {
+			modalImage.style.display = "none";
+			loader.style.display = "table";
+			var index = images.indexOf(imageNow);
+			if (index == 0) {
+				index = images.length;
+			}
+			imageNow = thumbs[index - 1].dataset.image;
+			modalImage.src = "images/fullsize/" + thumbs[index - 1].dataset.image;
+			modalTitle.innerHTML = thumbs[index - 1].dataset.title;
+		});
+	</script>
+</body>
+</html>
