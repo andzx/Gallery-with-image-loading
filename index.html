@@ -8,8 +8,9 @@
         .gallery {
             display:grid;
             grid-template-columns: repeat(auto-fill, minmax(252px, 1fr));
-            padding:5px;
             border:1px solid #ccc;
+            padding:5px;
+            flex:1 1 80px;
         }
         .thumb {
             border:1px solid #ccc;
@@ -24,14 +25,14 @@
         }
         .modal {
             display:none;
-            background:rgba(5,5,5,0.75);
             position:fixed;
             top:0;
             left:0;
             right:0;
             bottom:0;
-            justify-content:center;
-            align-items:center;
+            background:rgba(5, 5, 5, 0.75);
+            justify-content: center;
+            align-items: center;
             z-index:999;
         }
         .close-modal, .next-image, .previous-image {
@@ -40,7 +41,7 @@
             right:0;
             width:50px;
             height:50px;
-            list-style: height 50px;
+            line-height:50px;
             text-align:center;
             color:#ccc;
             user-select:none;
@@ -53,34 +54,37 @@
             padding:5px 0 10px 0;
             height:70px;
         }
+        .next-image {
+            right:0;
+        }
         .previous-image {
             left:0;
         }
         .modal-title {
             position:absolute;
             top:15px;
-            color:#ccc;
             font-size:24px;
             font-family:"Tahoma";
+            color:#fff;
         }
         .modal-image {
             max-height:calc(100% - 65px);
             max-width:calc(100% - 150px);
             padding-top:30px;
-            user-select:none;
+            user-select: none;
             animation:fadein 1s forwards;
         }
         .loading {
             display:table;
         }
         .dot1 {
-            animation: loading 0.75s 0.25s infinite;
+            animation:loading 0.75s 0.25s infinite;
         }
         .dot2 {
-            animation: loading 0.75s 0.5s infinite;
+            animation:loading 0.75s 0.5s infinite;
         }
         .dot3 {
-            animation: loading 0.75s 0.75s infinite;
+            animation:loading 0.75s 0.75s infinite;    
         }
         .dot1, .dot2, .dot3 {
             display:inline-block;
@@ -93,15 +97,30 @@
             100% {opacity:1;}
         }
         @keyframes fadein {
-            0% {opacity:0; transform:scale(0.1);}
-            100% {opacity:1; transform:scale(1);}
+            0% {opacity:0;transform:scale(0.1);}
+            100% {opacity:1;transform:scale(1.0);}
         }
     </style>
 </head>
 <body>
+    <div class="gallery">
+        <img src="images/thumbs/1.jpg" data-image="1.jpg" data-title="Forest" alt="translator" class="thumb">
+        <img src="images/thumbs/2.jpg" data-image="2.jpg" data-title="Pumpkins" alt="translator" class="thumb">
+        <img src="images/thumbs/3.jpg" data-image="3.jpg" data-title="City" alt="translator" class="thumb">
+        <img src="images/thumbs/1.jpg" data-image="1.jpg" data-title="Forest" alt="translator" class="thumb">
+        <img src="images/thumbs/2.jpg" data-image="2.jpg" data-title="Pumpkins" alt="translator" class="thumb">
+        <img src="images/thumbs/3.jpg" data-image="3.jpg" data-title="City" alt="translator" class="thumb">
+        <img src="images/thumbs/1.jpg" data-image="1.jpg" data-title="Forest" alt="translator" class="thumb">
+        <img src="images/thumbs/2.jpg" data-image="2.jpg" data-title="Pumpkins" alt="translator" class="thumb">
+        <img src="images/thumbs/3.jpg" data-image="3.jpg" data-title="City" alt="translator" class="thumb">
+        <img src="images/thumbs/1.jpg" data-image="1.jpg" data-title="Forest" alt="translator" class="thumb">
+        <img src="images/thumbs/2.jpg" data-image="2.jpg" data-title="Pumpkins" alt="translator" class="thumb">
+        <img src="images/thumbs/3.jpg" data-image="3.jpg" data-title="City" alt="translator" class="thumb">
+    </div>
+
     <div class="modal">
         <img class="modal-image" src="">
-        <div class="modal-title">Test</div>
+        <div class="modal-title"></div>
         <div class="close-modal">&times;</div>
         <div class="next-image">&rarr;</div>
         <div class="previous-image">&larr;</div>
@@ -111,20 +130,7 @@
             <div class="dot3">&#x25cf;</div>
         </div>
     </div>
-    <div class="gallery">
-        <img src="images/thumbs/1.jpg" data-image="1.jpg" data-title="Forest" class="thumb">
-        <img src="images/thumbs/2.jpg" data-image="2.jpg" data-title="Pumpkins" class="thumb">
-        <img src="images/thumbs/3.jpg" data-image="3.jpg" data-title="City" class="thumb">
-        <img src="images/thumbs/1.jpg" data-image="1.jpg" data-title="Forest" class="thumb">
-        <img src="images/thumbs/2.jpg" data-image="2.jpg" data-title="Pumpkins" class="thumb">
-        <img src="images/thumbs/3.jpg" data-image="3.jpg" data-title="City" class="thumb">
-        <img src="images/thumbs/1.jpg" data-image="1.jpg" data-title="Forest" class="thumb">
-        <img src="images/thumbs/2.jpg" data-image="2.jpg" data-title="Pumpkins" class="thumb">
-        <img src="images/thumbs/3.jpg" data-image="3.jpg" data-title="City" class="thumb">
-        <img src="images/thumbs/1.jpg" data-image="1.jpg" data-title="Forest" class="thumb">
-        <img src="images/thumbs/2.jpg" data-image="2.jpg" data-title="Pumpkins" class="thumb">
-        <img src="images/thumbs/3.jpg" data-image="3.jpg" data-title="City" class="thumb">
-    </div>
+
     <script type="text/javascript">
         var modal = document.querySelector(".modal");
         var modalImage = document.querySelector(".modal-image");
@@ -137,22 +143,8 @@
         var images = [];
         var imageNow;
 
-	// Listen for clicks on thumbnails
-        for (var i = 0; i < thumbs.length; i++) {
-            images.push(thumbs[i].dataset.image);
-
-            thumbs[i].addEventListener("click", function() {
-                modalImage.style.display = "none";
-                loader.style.display = "table";
-                imageNow = this.dataset.image;
-                modal.style.display = "flex";
-                modalImage.src = "images/fullsize/" + this.dataset.image;
-                modalTitle.innerHTML = this.dataset.title;
-            });
-        }
-
-	// Listen for image load event
-        modalImage.addEventListener("load", function() {
+        // Add event listener to modal image
+        modalImage.addEventListener("load", function () {
             loader.style.display = "none";
             this.style.display = "inline";
             this.style.animation = "none";
@@ -160,41 +152,94 @@
             this.style.animation = null;
         });
 
-        // Add modal close functionality
+        // Modal close functionality
         closeModal.addEventListener("click", function() {
             modal.style.display = "none";
         });
 
-	// Add modal close using esc key functionality
+        // Listen for esc key press
         document.addEventListener("keyup", function(e) {
             if (e.key == "Escape") {
                 modal.style.display = "none";
             }
         });
 
-	// Functionality for navigating one image forward
+        // Add an event listener to each thumb
+        for (var i = 0; i < thumbs.length; i++) {
+            // Add image to the image array
+            images.push(thumbs[i].dataset.image);
+
+            // Add event listener
+            thumbs[i].addEventListener("click", function() {
+                // Hide last image
+                modalImage.style.display = "none";
+
+                // Show loader
+                loader.style.display = "table";
+
+                // Set current image
+                imageNow = this.dataset.image;
+
+                // Display the modal
+                modal.style.display = "flex";
+
+                // Set the image source
+                modalImage.src = "images/fullsize/" + this.dataset.image;
+
+                // Set the modal title
+                modalTitle.innerHTML = this.dataset.title;
+            });
+        }
+
+        // Add event listener for next image
         nextImage.addEventListener("click", function() {
+            // Hide last image
             modalImage.style.display = "none";
+
+            // Show loader
             loader.style.display = "table";
+
+            // Get current image index
             var index = images.indexOf(imageNow);
+
+            // Loop in case we're on the last image
             if (index == images.length - 1) {
                 index = -1;
             }
+
+            // Set new image
             imageNow = thumbs[index + 1].dataset.image;
+
+            // Set the image source
             modalImage.src = "images/fullsize/" + thumbs[index + 1].dataset.image;
+
+            // Set the modal title
             modalTitle.innerHTML = thumbs[index + 1].dataset.title;
         });
 
-	// Functionality for navigating one image back
+        // Add event listener for the previous image
         previousImage.addEventListener("click", function() {
+            // Hide last image
             modalImage.style.display = "none";
+
+            // Show loader
             loader.style.display = "table";
+
+            // Get current image index
             var index = images.indexOf(imageNow);
+
+            // Loop in case we're on the first image
             if (index == 0) {
                 index = images.length;
             }
+
+            // Set new image
             imageNow = thumbs[index - 1].dataset.image;
+
+            // Set the image source
             modalImage.src = "images/fullsize/" + thumbs[index - 1].dataset.image;
+
+            // Set the modal title
             modalTitle.innerHTML = thumbs[index - 1].dataset.title;
         });
     </script>
