@@ -5,6 +5,7 @@
         * {
             box-sizing: border-box;
         }
+
         .gallery {
             display:grid;
             grid-template-columns: repeat(auto-fill, minmax(252px, 1fr));
@@ -12,6 +13,7 @@
             padding:5px;
             flex:1 1 80px;
         }
+
         .thumb {
             border:1px solid #ccc;
             cursor:pointer;
@@ -20,9 +22,11 @@
             transition:all 0.3s;
             justify-self:center;
         }
+
         .thumb:hover {
             opacity:0.5;
         }
+
         .modal {
             display:none;
             position:fixed;
@@ -35,6 +39,7 @@
             align-items: center;
             z-index:999;
         }
+
         .close-modal, .next-image, .previous-image {
             position:absolute;
             top:0;
@@ -48,18 +53,22 @@
             font-size:40px;
             cursor:pointer;
         }
+
         .next-image, .previous-image {
             top:50%;
             transform:translateY(-50%);
             padding:5px 0 10px 0;
             height:70px;
         }
+
         .next-image {
             right:0;
         }
+
         .previous-image {
             left:0;
         }
+
         .modal-title {
             position:absolute;
             top:15px;
@@ -67,6 +76,7 @@
             font-family:"Tahoma";
             color:#fff;
         }
+
         .modal-image {
             max-height:calc(100% - 65px);
             max-width:calc(100% - 150px);
@@ -74,28 +84,27 @@
             user-select: none;
             animation:fadein 1s forwards;
         }
+
         .loading {
             display:table;
         }
-        .dot1 {
-            animation:loading 0.75s 0.25s infinite;
-        }
-        .dot2 {
-            animation:loading 0.75s 0.5s infinite;
-        }
-        .dot3 {
-            animation:loading 0.75s 0.75s infinite;    
-        }
+
+        .dot1 {animation:loading 0.75s 0.25s infinite;}
+        .dot2 {animation:loading 0.75s 0.5s infinite;}
+        .dot3 {animation:loading 0.75s 0.75s infinite;}
+
         .dot1, .dot2, .dot3 {
             display:inline-block;
             color:#ccc;
             font-size:32pt;
         }
+
         @keyframes loading {
             0% {opacity:1;}
             50% {opacity:0;}
             100% {opacity:1;}
         }
+
         @keyframes fadein {
             0% {opacity:0;transform:scale(0.1);}
             100% {opacity:1;transform:scale(1.0);}
